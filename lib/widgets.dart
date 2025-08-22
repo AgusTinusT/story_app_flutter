@@ -12,9 +12,9 @@ class AppTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.labelText,
-    this.hintText = '', // Default value
-    this.isObscure = false, // Default value
-    this.keyboardType = TextInputType.text, // Default value
+    this.hintText = '',
+    this.isObscure = false,
+    this.keyboardType = TextInputType.text,
     this.validator,
   });
 
@@ -28,7 +28,6 @@ class AppTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        // Di sinilah kita mendefinisikan tema/style-nya
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -52,30 +51,26 @@ class AppTextField extends StatelessWidget {
 
 class AppPrimaryButton extends StatelessWidget {
   final String text;
-  final VoidCallback?
-  onPressed; // VoidCallback adalah tipe data untuk fungsi tanpa parameter
+  final VoidCallback? onPressed;
   final bool isLoading;
 
   const AppPrimaryButton({
     super.key,
     required this.text,
     required this.onPressed,
-    this.isLoading = false, // Default value
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity, // Membuat button selebar mungkin
-      height: 50, // Memberi tinggi yang konsisten
+      width: double.infinity,
+      height: 50,
       child: ElevatedButton(
-        // Menonaktifkan tombol saat loading atau jika onPressed null
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          // Di sinilah kita mendefinisikan tema/style-nya
-          backgroundColor:
-              Theme.of(context).primaryColor, // Warna utama dari tema
-          foregroundColor: Colors.white, // Warna teks
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),

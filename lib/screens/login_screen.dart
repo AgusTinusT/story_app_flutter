@@ -27,10 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (mounted) {
         if (!response.error) {
-          // Navigasi ke halaman home jika berhasil
           Navigator.pushReplacementNamed(context, HomeScreen.routeName);
         } else {
-          // Tampilkan pesan error dari API
           final message =
               response.message ??
               'Login Gagal. Cek kembali email dan password.';

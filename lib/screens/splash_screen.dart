@@ -22,21 +22,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _checkAuth() async {
-    // A short delay to show the splash screen
     await Future.delayed(const Duration(seconds: 2));
     await Provider.of<AuthProvider>(context, listen: false).checkAuth();
 
     if (mounted) {
       if (Provider.of<AuthProvider>(context, listen: false).isAuthenticated) {
-        Navigator.pushReplacementNamed(
-          context,
-          HomeScreen.routeName,
-        );
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       } else {
-        Navigator.pushReplacementNamed(
-          context,
-          LoginScreen.routeName,
-        );
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
       }
     }
   }

@@ -27,15 +27,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (mounted) {
         if (!response.error) {
-          // Tampilkan pesan sukses dan arahkan ke halaman login
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Registrasi Berhasil! Silakan Login.'),
             ),
           );
-          Navigator.pop(context); // Kembali ke halaman sebelumnya (login)
+          Navigator.pop(context);
         } else {
-          // Tampilkan pesan error dari API
           final message = response.message;
           ScaffoldMessenger.of(
             context,
