@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/providers/auth_provider.dart';
-import 'package:story_app/screens/home_screen.dart';
-import 'package:story_app/screens/register_screen.dart';
 import 'package:story_app/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeName = '/login';
   const LoginScreen({super.key});
 
   @override
@@ -27,11 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (mounted) {
         if (!response.error) {
-          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+          context.go('/home');
         } else {
-          final message =
-              response.message ??
-              'Login Gagal. Cek kembali email dan password.';
+          final message = response.message;
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(message)));
@@ -89,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, RegisterScreen.routeName);
+                  context.push('/register');
                 },
                 child: const Text('Belum punya akun? Register'),
               ),

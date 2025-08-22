@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/providers/auth_provider.dart';
 import 'package:story_app/widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
-  static const String routeName = '/register';
   const RegisterScreen({super.key});
 
   @override
@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               content: Text('Registrasi Berhasil! Silakan Login.'),
             ),
           );
-          Navigator.pop(context);
+          context.pop();
         } else {
           final message = response.message;
           ScaffoldMessenger.of(
