@@ -1,6 +1,6 @@
 # Story App
 
-A Flutter application for managing stories, featuring a robust authentication system.
+A Flutter application for managing stories, featuring a robust authentication system and story management.
 
 ## Features
 
@@ -9,8 +9,15 @@ A Flutter application for managing stories, featuring a robust authentication sy
 - Client-side Input Validation
 - Session Management (auto-login with splash screen)
 - Centralized State Management (using `provider`)
-- Named Routes for Navigation
+- Named Routes for Navigation (using `go_router`)
+- API Communication (using `http`)
+- Story Listing and Detail Viewing
+- Adding New Stories with Image Upload (using `image_picker`)
 - API Response Model Classes
+
+## Recent Improvements
+
+- Fixed keyboard overflow issues on login and add story screens.
 
 ## Setup Instructions
 
