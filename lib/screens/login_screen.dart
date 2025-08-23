@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/providers/auth_provider.dart';
-import 'package:story_app/screens/home_screen.dart';
-import 'package:story_app/screens/register_screen.dart';
 import 'package:story_app/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeName = '/login';
   const LoginScreen({super.key});
 
   @override
@@ -27,11 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (mounted) {
         if (!response.error) {
-          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+          context.go('/home');
         } else {
-          final message =
-              response.message ??
-              'Login Gagal. Cek kembali email dan password.';
+          final message = response.message;
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(message)));
@@ -50,50 +46,52 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AppTextField(
-                controller: _emailController,
-                labelText: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              AppTextField(
-                controller: _passwordController,
-                labelText: 'Password',
-                isObscure: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              authProvider.isLoading
-                  ? const CircularProgressIndicator()
-                  : AppPrimaryButton(
-                    text: 'Login',
-                    onPressed: () => _handleLogin(authProvider),
-                    isLoading: authProvider.isLoading,
-                  ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, RegisterScreen.routeName);
-                },
-                child: const Text('Belum punya akun? Register'),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppTextField(
+                  controller: _emailController,
+                  labelText: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                AppTextField(
+                  controller: _passwordController,
+                  labelText: 'Password',
+                  isObscure: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 24),
+                authProvider.isLoading
+                    ? const CircularProgressIndicator()
+                    : AppPrimaryButton(
+                      text: 'Login',
+                      onPressed: () => _handleLogin(authProvider),
+                      isLoading: authProvider.isLoading,
+                    ),
+                TextButton(
+                  onPressed: () {
+                    context.push('/register');
+                  },
+                  child: const Text('Belum punya akun? Register'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

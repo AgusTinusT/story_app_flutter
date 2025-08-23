@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/providers/auth_provider.dart';
-import 'package:story_app/screens/home_screen.dart';
-import 'package:story_app/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const String routeName = '/';
   const SplashScreen({super.key});
 
   @override
@@ -23,13 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _checkAuth() async {
     await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
     await Provider.of<AuthProvider>(context, listen: false).checkAuth();
 
     if (mounted) {
       if (Provider.of<AuthProvider>(context, listen: false).isAuthenticated) {
-        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        context.go('/home');
       } else {
-        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+        context.go('/login');
       }
     }
   }
