@@ -8,9 +8,9 @@ class StoryService {
   static const String _baseUrl = 'https://story-api.dicoding.dev/v1';
   final AuthService _authService = AuthService();
 
-  Future<List<Story>> getStories() async {
+  Future<List<Story>> getStories({int page = 1, int size = 10}) async {
     final token = await _authService.getToken();
-    final url = Uri.parse('$_baseUrl/stories');
+    final url = Uri.parse('$_baseUrl/stories?page=$page&size=$size');
 
     final response = await http.get(
       url,
