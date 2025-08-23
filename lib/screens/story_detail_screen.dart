@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:story_app/models.dart';
 import 'package:story_app/services/story_service.dart';
 
@@ -14,6 +15,7 @@ class StoryDetailScreen extends StatefulWidget {
 class _StoryDetailScreenState extends State<StoryDetailScreen> {
   final StoryService _storyService = StoryService();
   late Future<Story> _storyDetailFuture;
+  GoogleMapController? _mapController;
 
   @override
   void initState() {
@@ -31,7 +33,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: \${snapshot.error}'));
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData) {
             return const Center(child: Text('Story not found.'));
           } else {
@@ -58,7 +60,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Created at: \${story.createdAt.toLocal()}',
+                    'Created at: ${story.createdAt.toLocal()}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 16),
@@ -66,6 +68,28 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                     story.description,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
+                  const SizedBox(height: 16),
+                  if (story.lat != null && story.lon != null)
+                    SizedBox(
+                      height: 300,
+                      child: GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(story.lat!, story.lon!),
+                          zoom: 15,
+                        ),
+                        markers: {
+                          Marker(
+                            markerId: const MarkerId('story-location'),
+                            position: LatLng(story.lat!, story.lon!),
+                          ),
+                        },
+                        onMapCreated: (controller) {
+                          setState(() {
+                            _mapController = controller;
+                          });
+                        },
+                      ),
+                    ),
                 ],
               ),
             );
