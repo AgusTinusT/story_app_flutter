@@ -6,6 +6,7 @@ import 'package:story_app/screens/login_screen.dart';
 import 'package:story_app/screens/register_screen.dart';
 import 'package:story_app/screens/splash_screen.dart';
 import 'package:story_app/screens/story_detail_screen.dart';
+import 'package:story_app/screens/pick_location_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -45,6 +46,12 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) {
           final id = state.pathParameters['id']!;
           return StoryDetailScreen(id: id);
+        },
+      ),
+      GoRoute(
+        path: '/pick-location',
+        builder: (BuildContext context, GoRouterState state) {
+          return const PickLocationScreen();
         },
       ),
     ],

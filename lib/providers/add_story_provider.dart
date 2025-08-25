@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:story_app/services/story_service.dart';
 
@@ -10,10 +11,12 @@ class AddStoryProvider extends ChangeNotifier {
   File? _image;
   bool _isLoading = false;
   String? _message;
+  LatLng? _location;
 
   File? get image => _image;
   bool get isLoading => _isLoading;
   String? get message => _message;
+  LatLng? get location => _location;
 
   Future<void> pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -26,7 +29,12 @@ class AddStoryProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> addStory(String description) async {
+  void setLocation(LatLng location) {
+    _location = location;
+    notifyListeners();
+  }
+
+  Future<bool> addStory(String description, {double? lat, double? lon}) async {
     if (_image == null) {
       _message = 'Please select an image';
       notifyListeners();
@@ -40,14 +48,14 @@ class AddStoryProvider extends ChangeNotifier {
       final bytes = await _image!.readAsBytes();
       final fileName = _image!.path.split('/').last;
 
-      await _storyService.addStory(description, bytes, fileName);
+      await _storyService.addStory(description, bytes, fileName, lat: lat, lon: lon);
 
       _message = 'Story added successfully!';
       _isLoading = false;
       notifyListeners();
       return true;
     } catch (e) {
-      _message = 'Failed to add story: \$e';
+      _message = 'Failed to add story: $e';
       _isLoading = false;
       notifyListeners();
       return false;

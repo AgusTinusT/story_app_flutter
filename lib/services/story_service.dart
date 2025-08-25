@@ -50,13 +50,20 @@ class StoryService {
   }
 
   Future<void> addStory(
-      String description, List<int> bytes, String fileName) async {
+      String description, List<int> bytes, String fileName,
+      {double? lat, double? lon}) async {
     final token = await _authService.getToken();
     final url = Uri.parse('$_baseUrl/stories');
 
     var request = http.MultipartRequest('POST', url);
     request.headers['Authorization'] = 'Bearer $token';
     request.fields['description'] = description;
+    if (lat != null) {
+      request.fields['lat'] = lat.toString();
+    }
+    if (lon != null) {
+      request.fields['lon'] = lon.toString();
+    }
     request.files.add(
       http.MultipartFile.fromBytes(
         'photo',
