@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/providers/story_detail_provider.dart';
@@ -12,10 +13,9 @@ class StoryDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => StoryDetailProvider(
-        storyService: StoryService(),
-        id: id,
-      ),
+      create:
+          (context) =>
+              StoryDetailProvider(storyService: StoryService(), id: id),
       child: Scaffold(
         appBar: AppBar(title: const Text('Detail Story')),
         body: Consumer<StoryDetailProvider>(
@@ -36,15 +36,16 @@ class StoryDetailScreen extends StatelessWidget {
                         story.photoUrl,
                         width: double.infinity,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Center(child: Icon(Icons.image, size: 100)),
+                        errorBuilder:
+                            (context, error, stackTrace) => const Center(
+                              child: Icon(Icons.image, size: 100),
+                            ),
                       ),
                       const SizedBox(height: 16),
                       Text(
                         story.name,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -58,21 +59,7 @@ class StoryDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       if (story.lat != null && story.lon != null)
-                        SizedBox(
-                          height: 300,
-                          child: GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(story.lat!, story.lon!),
-                              zoom: 15,
-                            ),
-                            markers: {
-                              Marker(
-                                markerId: const MarkerId('story-location'),
-                                position: LatLng(story.lat!, story.lon!),
-                              ),
-                            },
-                          ),
-                        ),
+                        _StoryMap(location: LatLng(story.lat!, story.lon!)),
                     ],
                   ),
                 );
@@ -81,6 +68,70 @@ class StoryDetailScreen extends StatelessWidget {
             }
           },
         ),
+      ),
+    );
+  }
+}
+
+class _StoryMap extends StatefulWidget {
+  final LatLng location;
+
+  const _StoryMap({required this.location});
+
+  @override
+  State<_StoryMap> createState() => _StoryMapState();
+}
+
+class _StoryMapState extends State<_StoryMap> {
+  String? _address;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAddress();
+  }
+
+  Future<void> _fetchAddress() async {
+    try {
+      final placemarks = await geo.placemarkFromCoordinates(
+        widget.location.latitude,
+        widget.location.longitude,
+      );
+      if (mounted && placemarks.isNotEmpty) {
+        final placemark = placemarks.first;
+        setState(() {
+          _address =
+              '${placemark.subLocality}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}';
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _address = 'Could not get address';
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: widget.location,
+          zoom: 15,
+        ),
+        markers: {
+          Marker(
+            markerId: const MarkerId('story-location'),
+            position: widget.location,
+            infoWindow: InfoWindow(
+              title: 'Story Location',
+              snippet: _address ?? 'Loading address...',
+            ),
+          ),
+        },
       ),
     );
   }
