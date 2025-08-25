@@ -20,9 +20,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AddStoryProvider()),
         ChangeNotifierProvider(create: (context) => HomeProvider()),
       ],
-      child: MaterialApp.router(
-        routerConfig: AppRouter.router,
-      ),
+      child: MaterialApp.router(routerConfig: AppRouter.router),
     );
   }
 }
