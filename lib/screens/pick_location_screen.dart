@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geo;
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -41,7 +42,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
             IconButton(
               icon: const Icon(Icons.check),
               onPressed: () {
-                Navigator.of(context).pop(_selectedLocation);
+                context.pop(_selectedLocation);
               },
             ),
         ],
