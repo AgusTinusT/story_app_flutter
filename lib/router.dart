@@ -3,10 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:story_app/screens/add_story_screen.dart';
 import 'package:story_app/screens/home_screen.dart';
 import 'package:story_app/screens/login_screen.dart';
+import 'package:story_app/screens/pick_location_screen.dart';
 import 'package:story_app/screens/register_screen.dart';
 import 'package:story_app/screens/splash_screen.dart';
 import 'package:story_app/screens/story_detail_screen.dart';
-import 'package:story_app/screens/pick_location_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
