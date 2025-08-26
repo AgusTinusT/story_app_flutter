@@ -20,6 +20,7 @@ dependencies:
   permission_handler: ^11.0.1
   geocoding: ^2.0.0
   flutter_svg: ^2.0.10+1
+  shimmer: ^3.0.0 # Added for shimmer effect
 
 dev_dependencies:
   flutter_test:
